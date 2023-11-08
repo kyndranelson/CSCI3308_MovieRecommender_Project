@@ -6,3 +6,4 @@ Prerequisites to run the application - Any software that needs to be installed t
 Instructions on how to run the application locally.
 How to run the tests
 Link to the deployed application
+Test
