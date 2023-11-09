@@ -50,4 +50,32 @@ describe('Server!', () => {
         done();
       });
   });
+
+  // Positive: Successful registration
+  it('Positive : /register. Successful registration', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({ username: "newUser", password: "newPassword" })
+      .end((err, res) => {
+        expect(err).to.be.null;
+        const finalUrl = res.redirects[res.redirects.length - 1];
+        expect(finalUrl.endsWith('/login')).to.be.true;
+        done();
+      });
+  });
+
+  // Negative: Attempting to register with an existing username
+  it('Negative : /register. Register with existing username', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({ username: "validUsername", password: "password" })
+      .end((err, res) => {
+        expect(err).to.be.null;
+        const finalUrl = res.redirects[res.redirects.length - 1];
+        expect(finalUrl.endsWith('/register')).to.be.true;
+        done();
+      });
+  });
 });

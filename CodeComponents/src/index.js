@@ -78,6 +78,25 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [username]);
+
+        if (user) {
+            res.redirect('/register');
+            return;
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+
+        await db.any('INSERT INTO users(username, password) VALUES($1, $2)', [username, hash])
+        res.redirect('/login');
+    } catch (err) {
+        res.redirect('/register');
+    }
+});
 /* END ROUTES */
 
 module.exports = app.listen(3000);
