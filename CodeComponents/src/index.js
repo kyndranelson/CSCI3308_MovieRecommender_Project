@@ -3,6 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const bcrypt = require('bcrypt');
 
 /* START DATA BASE STUFF */
 const dbConfig = {
@@ -24,11 +25,10 @@ db.connect()
   });
 /* END DATA BASE STUFF */
 
+/* START EXPRESS CONFIG */
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
 
-app.set('view engine', 'ejs'); // set the view engine to EJS
-app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
-
-// initialize session variables
 app.use(
     session({
       secret: process.env.SESSION_SECRET,
@@ -42,10 +42,43 @@ app.use(
       extended: true,
     })
   );
+/* END EXPRESS CONFIG */
 
+/* START ROUTES */
+// TEST ROUTE
 app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
 });
+
+// LOGIN ROUTE
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [username]);
+
+        if (!user) {
+            res.redirect('/register');
+            return;
+        }
+
+        const isValid = await bcrypt.compare(password, user.password);
+
+        if (!isValid) {
+            res.render('/login', { error: 'Invalid username or password' });
+            return;
+        }
+
+        req.session.user = user;
+        req.session.save();
+
+        res.redirect('/discover');
+    } catch (err) {
+        res.render('/login', { error: 'Error when contacting database' });
+    }
+});
+
+/* END ROUTES */
 
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');

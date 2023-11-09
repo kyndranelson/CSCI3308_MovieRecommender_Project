@@ -23,6 +23,28 @@ describe('Server!', () => {
       });
   });
 
-  // ===========================================================================
-  // TO-DO: Part A Login unit test case
+  // Positive login
+  it('positive : /login', done => {
+    chai
+      .request(server)
+      .post('/login')
+      .send({ username: "validUsername", password: "validPassword" })
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.redirectTo('/discover');
+        done();
+      });
+  });
+  
+  // Negative login
+  it('Negative : /login', done => {
+    chai
+      .request(server)
+      .post('/login')
+      .send({ username: "invalidUsername", password: "invalidPassword" })
+      .end((err, res) => {
+        expect(res).to.redirectTo('/login'); 
+        done();
+      });
+  });
 });
