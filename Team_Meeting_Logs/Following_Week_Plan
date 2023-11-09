@@ -5,3 +5,5 @@
 - []create file layout system
 - []get a database we can use
 - []create the base layout of our pages - no functions yet?
+- []create .sql file to create tables for our local database
+- []find and utilize API routes
