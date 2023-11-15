@@ -70,7 +70,6 @@ app.get('/discover', async (req, res) => {
   }
 });
 app.get('/logout', (req, res) => {
-  //
   res.render('pages/logout',)
 });
 app.get('/login', (req, res) => {
