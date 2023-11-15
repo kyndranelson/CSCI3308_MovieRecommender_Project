@@ -1,16 +1,19 @@
 <%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
 
 <main>
   <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <h1>Register</h1>
     <form action="/register" method="POST">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" />
-  
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" />
+        <br> <br>
         <label for="password">Password:</label>
         <input type="text" id="password" name="password" />
-  
-        <input type="submit" value="Submit" />
-    </form>
+      
+        <input type="submit" value="Register" />
+      </form>
   </div>
 </main>
 
