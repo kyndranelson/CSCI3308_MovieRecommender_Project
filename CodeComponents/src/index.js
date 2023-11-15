@@ -1,9 +1,12 @@
-const express = require('express');
+const express = require('express'); // To build an application server or API
 const app = express();
-const pgp = require('pg-promise')();
+const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
 const bodyParser = require('body-parser');
-const session = require('express-session');
-const bcrypt = require('bcrypt');
+const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
+const bcrypt = require('bcrypt'); //  To hash passwords
+const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
+
+
 
 /* START DATA BASE STUFF */
 const dbConfig = {
@@ -45,6 +48,35 @@ app.use(
 /* END EXPRESS CONFIG */
 
 /* START ROUTES */
+app.get('/', (req, res) => {
+  // Use the res.redirect method to redirect the user to the /login endpoint
+  res.render('/discover')
+});
+// Discover route
+app.get('/discover', async (req, res) => {
+  try {
+    // Fetch top-rated movies from TMDb using API key from .env
+    const apiKey = process.env.API_KEY;
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
+    
+    // Extract relevant data
+    const topMovies = response.data.results || [];
+
+    // Render the discover page with top movies
+    res.render('pages/discover', { topMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+app.get('/login', (req, res) => {
+  // Handle the login page logic here or render a login page if needed
+  res.render('pages/login',)
+});
+app.get('/register', (req, res) => {
+  // Use the res.redirect method to redirect the user to the /login endpoint
+  res.render('pages/register',)
+});
 // TEST ROUTE
 app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
@@ -65,7 +97,7 @@ app.post('/login', async (req, res) => {
         const isValid = await bcrypt.compare(password, user.password);
 
         if (!isValid) {
-            res.render('/login', { error: 'Invalid username or password' });
+            res.render('pages/login', { error: 'Invalid username or password' });
             return;
         }
 
@@ -74,7 +106,7 @@ app.post('/login', async (req, res) => {
 
         res.redirect('/discover');
     } catch (err) {
-        res.render('/login', { error: 'Error when contacting database' });
+        res.render('pages/login', { error: 'Error when contacting database' });
     }
 });
 
