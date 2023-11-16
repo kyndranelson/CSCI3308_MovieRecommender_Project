@@ -1,20 +1,29 @@
-<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
 <main>
   <div class="container">
-    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <div class="col-md-2 mx-auto">
     <h1>Register</h1>
     <form action="/register" method="POST">
+      <div class="form-group ">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" />
-      
+      </div>
+
+
+      <div class="form-group">
         <label for="password">Password:</label>
-        <input type="text" id="password" name="password" />
-      
-        <input type="submit" value="Register" />
+        <input type="password" id="password" name="password" />
+      </div>
+
+
+      <div class="form-group" style = "margin-top: 10px;">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
       </form>
   </div>
+</div>
 </main>
 
 <%- include ('../partials/footer') %>
