@@ -1,30 +1,27 @@
 <%- include('../partials/header', { title: 'Discover Movies - Purrfect Movie Rec' }) %>
 
-
 <!-- Include the menu -->
 <%- include('../partials/menu') %>
 
 <div class="container mt-4">
   <!-- Page heading -->
-  <h2 class="mb-4">Top Rated Movies</h2>
+  <h2 class="mb-4">Popular Movies</h2>
 
   <!-- Movie cards in a grid -->
-  
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <% topMovies.forEach(movie => { %>
-      
       <div class="col">
         <!-- Bootstrap card for each movie -->
         <div class="card">
           <!-- Movie poster at the top of the card -->
-          <img src="<%= movie.Poster %>" class="card-img-top" alt="<%= movie.title %> Poster">
+          <img src="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>" class="card-img-top" alt="<%= movie.title %> Poster">
           <div class="card-body">
-            <!-- Movie title -->
             <h5 class="card-title"><%= movie.title %></h5>
-            <!-- Movie details -->
             <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
-            <p class="card-text"><strong>Genres:</strong> <%= movie.genre_ids %></p>
-            <p class="card-text"><strong>Average Score</strong> <%= movie.vote_average %></p>
+            <p class="card-text"><strong>Genre:</strong> <%= movie.genre_ids %></p>
+            <p class="card-text"><strong>Average Score:</strong> <%= movie.vote_average %></p>
+            <p class="card-text"><strong>Overview:</strong> <%= movie.overview %></p>
+            <!-- Add other details you want to display -->
           </div>
         </div>
       </div>
