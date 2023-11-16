@@ -3,3 +3,20 @@ CREATE TABLE users (
     password CHAR(60) NOT NULL 
 );
 
+CREATE TABLE saved_movies (
+
+);
+
+CREATE TABLE saved_to_users (
+
+);
+
+CREATE TABLE watched_movies (
+
+);
+
+CREATE TABLE watched_to_users (
+
+);
+
+
