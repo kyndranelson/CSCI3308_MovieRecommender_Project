@@ -50,7 +50,7 @@ app.use(
 /* START ROUTES */
 app.get('/', (req, res) => {
   // Use the res.redirect method to redirect the user to the /login endpoint
-  res.render('/discover')
+  res.redirect('/discover')
 });
 // Discover route
 app.get('/discover', async (req, res) => {
