@@ -55,18 +55,21 @@ app.get('/', (req, res) => {
 // Discover route
 app.get('/discover', async (req, res) => {
   try {
-    // Fetch top-rated movies from TMDb using API key from .env
-    const apiKey = process.env.API_KEY;
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
-    
-    // Extract relevant data
-    const topMovies = response.data.results || [];
+    const tmdbEndpoint = 'https://api.themoviedb.org/3/discover/movie';
+    const params = {
+      api_key: process.env.API_KEY,
+      language: 'en-US',
+      sort_by: 'popularity.desc',
+      page: 1,
+    };
 
-    // Render the discover page with top movies
-    console.log(topMovies)
+    const response = await axios.get(tmdbEndpoint, { params });
+
+
+    const topMovies = response.data.results.slice(0, 10); // Adjust the number of movies as needed
     res.render('pages/discover', { topMovies });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
   }
 });
