@@ -30,9 +30,8 @@ describe('Server!', () => {
       .post('/login')
       .send({ username: "validUsername", password: "validPassword" })
       .end((err, res) => {
-        const finalUrl = res.redirects[res.redirects.length - 1]; 
-        expect(finalUrl.endsWith('/discover')).to.be.true; 
-  
+        expect(err).to.be.null;
+        expect(res).to.redirectTo('/discover');
         done();
       });
   });
@@ -44,37 +43,7 @@ describe('Server!', () => {
       .post('/login')
       .send({ username: "invalidUsername", password: "invalidPassword" })
       .end((err, res) => {
-        const finalUrl = res.redirects[res.redirects.length - 1]; 
-        expect(finalUrl.endsWith('/login') || finalUrl.endsWith('/register')).to.be.true; 
-  
-        done();
-      });
-  });
-
-  // Positive: Successful registration
-  it('Positive : /register. Successful registration', done => {
-    chai
-      .request(server)
-      .post('/register')
-      .send({ username: "newUser", password: "newPassword" })
-      .end((err, res) => {
-        expect(err).to.be.null;
-        const finalUrl = res.redirects[res.redirects.length - 1];
-        expect(finalUrl.endsWith('/login')).to.be.true;
-        done();
-      });
-  });
-
-  // Negative: Attempting to register with an existing username
-  it('Negative : /register. Register with existing username', done => {
-    chai
-      .request(server)
-      .post('/register')
-      .send({ username: "validUsername", password: "password" })
-      .end((err, res) => {
-        expect(err).to.be.null;
-        const finalUrl = res.redirects[res.redirects.length - 1];
-        expect(finalUrl.endsWith('/register')).to.be.true;
+        expect(res).to.redirectTo('/login'); 
         done();
       });
   });

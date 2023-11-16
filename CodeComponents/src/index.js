@@ -69,6 +69,9 @@ app.get('/discover', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+app.get('/logout', (req, res) => {
+  res.render('pages/logout',)
+});
 app.get('/login', (req, res) => {
   // Handle the login page logic here or render a login page if needed
   res.render('pages/login',)
