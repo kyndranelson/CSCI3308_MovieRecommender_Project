@@ -69,6 +69,20 @@ app.get('/discover', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+app.get('/saved_movies', async (req, res) => {
+  try {
+    // TODO: Query the database for saved movies
+    const savedMovies = [];
+
+    // Render the discover page with saved movies
+    res.render('pages/savedMovies', { savedMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.get('/logout', (req, res) => {
   res.render('pages/logout',)
 });
