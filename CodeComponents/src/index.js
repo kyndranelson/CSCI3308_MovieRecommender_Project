@@ -63,6 +63,7 @@ app.get('/discover', async (req, res) => {
     const topMovies = response.data.results || [];
 
     // Render the discover page with top movies
+    console.log(topMovies)
     res.render('pages/discover', { topMovies });
   } catch (error) {
     console.error(error);

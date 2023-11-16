@@ -9,20 +9,22 @@
   <h2 class="mb-4">Top Rated Movies</h2>
 
   <!-- Movie cards in a grid -->
+  
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <% topMovies.forEach(movie => { %>
+      
       <div class="col">
         <!-- Bootstrap card for each movie -->
         <div class="card">
           <!-- Movie poster at the top of the card -->
-          <img src="<%= movie.Poster %>" class="card-img-top" alt="<%= movie.Title %> Poster">
+          <img src="<%= movie.Poster %>" class="card-img-top" alt="<%= movie.title %> Poster">
           <div class="card-body">
             <!-- Movie title -->
-            <h5 class="card-title"><%= movie.Title %></h5>
+            <h5 class="card-title"><%= movie.title %></h5>
             <!-- Movie details -->
-            <p class="card-text"><strong>Year:</strong> <%= movie.Year %></p>
-            <p class="card-text"><strong>Type:</strong> <%= movie.Type %></p>
-            <p class="card-text"><strong>IMDb ID:</strong> <%= movie.imdbID %></p>
+            <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
+            <p class="card-text"><strong>Genres:</strong> <%= movie.genre_ids %></p>
+            <p class="card-text"><strong>Average Score</strong> <%= movie.vote_average %></p>
           </div>
         </div>
       </div>
