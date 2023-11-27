@@ -94,7 +94,10 @@ app.get('/welcome', (req, res) => {
 app.get('/saved_movies', async (req, res) => {
   try {
     // TODO: Query the database for saved movies
-    const savedMovies = [];
+    const savedMovies = await db.any(
+      "SELECT sm.* FROM movies sm JOIN saved_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
+      [req.body.username]
+    );
 
     // Render the discover page with saved movies
     res.render('pages/savedMovies', { savedMovies });
