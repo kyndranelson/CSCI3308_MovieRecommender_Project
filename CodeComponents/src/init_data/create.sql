@@ -9,7 +9,8 @@ CREATE TABLE movies (
     release_date VARCHAR(50),
     genre VARCHAR(50),
     vote_average VARCHAR(50),
-    overview VARCHAR(1000)
+    overview VARCHAR(1000),
+    image_url VARCHAR(300)
 );
 
 CREATE TABLE saved_to_users (

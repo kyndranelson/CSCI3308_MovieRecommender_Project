@@ -93,14 +93,36 @@ app.get('/welcome', (req, res) => {
 
 app.get('/saved_movies', async (req, res) => {
   try {
+    const username = req.session.user.username;
     // TODO: Query the database for saved movies
     const savedMovies = await db.any(
       "SELECT sm.* FROM movies sm JOIN saved_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
-      [req.body.username]
+      [username]
     );
+
+    console.log(savedMovies)
 
     // Render the discover page with saved movies
     res.render('pages/savedMovies', { savedMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/watched_movies', async (req, res) => {
+  try {
+    const username = req.session.user.username;
+    // TODO: Query the database for saved movies
+    const watchedMovies = await db.any(
+      "SELECT sm.* FROM movies sm JOIN watched_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
+      [username]
+    );
+
+    console.log(watchedMovies)
+
+    // Render the discover page with saved movies
+    res.render('pages/watchedMovies', { watchedMovies });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -166,7 +188,7 @@ app.post('/register', async (req, res) => {
 // SAVE MOVIE
 app.post('/save_movie', async (req, res) => {
   try {
-      const { title, release_date, genre, vote_average, overview } = req.body;
+      const { title, release_date, genre, vote_average, overview, image_url } = req.body;
       const username = req.session.user.username;
 
       const existingMovie = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title]);
@@ -176,13 +198,41 @@ app.post('/save_movie', async (req, res) => {
           movieId = existingMovie.id;
       } else {
           const insertedMovie = await db.one(
-              'INSERT INTO movies (title, release_date, genre, vote_average, overview) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-              [title, release_date, genre, vote_average, overview]
+              'INSERT INTO movies (title, release_date, genre, vote_average, overview, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+              [title, release_date, genre, vote_average, overview, image_url]
           );
           movieId = insertedMovie.id;
       }
 
       await db.none('INSERT INTO saved_to_users (username, movie_id) VALUES ($1, $2)', [username, movieId]);
+
+      res.status(200).json({ message: "Movie saved successfully." });
+  } catch (error) {
+      console.error('Error saving movie:', error);
+      res.status(500).json({ error: "An error occurred while saving the movie." });
+  }
+});
+
+// WATCH MOVIE
+app.post('/watch_movie', async (req, res) => {
+  try {
+      const { title, release_date, genre, vote_average, overview, image_url } = req.body;
+      const username = req.session.user.username;
+
+      const existingMovie = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title]);
+
+      let movieId;
+      if (existingMovie) {
+          movieId = existingMovie.id;
+      } else {
+          const insertedMovie = await db.one(
+              'INSERT INTO movies (title, release_date, genre, vote_average, overview, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+              [title, release_date, genre, vote_average, overview, image_url]
+          );
+          movieId = insertedMovie.id;
+      }
+
+      await db.none('INSERT INTO watched_to_users (username, movie_id) VALUES ($1, $2)', [username, movieId]);
 
       res.status(200).json({ message: "Movie saved successfully." });
   } catch (error) {
