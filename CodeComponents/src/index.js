@@ -89,6 +89,19 @@ app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
 });
 
+app.get('/saved_movies', async (req, res) => {
+  try {
+    // TODO: Query the database for saved movies
+    const savedMovies = [];
+
+    // Render the discover page with saved movies
+    res.render('pages/savedMovies', { savedMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // LOGIN ROUTE
 app.post('/login', async (req, res) => {
     try {
