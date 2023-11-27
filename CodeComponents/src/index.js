@@ -50,39 +50,29 @@ app.use(
 /* START ROUTES */
 app.get('/', (req, res) => {
   // Use the res.redirect method to redirect the user to the /login endpoint
-  res.render('/discover')
+  res.redirect('/discover')
 });
 // Discover route
 app.get('/discover', async (req, res) => {
   try {
-    // Fetch top-rated movies from TMDb using API key from .env
-    const apiKey = process.env.API_KEY;
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
-    
-    // Extract relevant data
-    const topMovies = response.data.results || [];
+    const tmdbEndpoint = 'https://api.themoviedb.org/3/discover/movie';
+    const params = {
+      api_key: process.env.API_KEY,
+      language: 'en-US',
+      sort_by: 'popularity.desc',
+      page: 1,
+    };
 
-    // Render the discover page with top movies
+    const response = await axios.get(tmdbEndpoint, { params });
+
+
+    const topMovies = response.data.results.slice(0, 10); // Adjust the number of movies as needed
     res.render('pages/discover', { topMovies });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
   }
 });
-
-app.get('/saved_movies', async (req, res) => {
-  try {
-    // TODO: Query the database for saved movies
-    const savedMovies = [];
-
-    // Render the discover page with saved movies
-    res.render('pages/savedMovies', { savedMovies });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
 app.get('/logout', (req, res) => {
   res.render('pages/logout',)
 });
@@ -97,6 +87,19 @@ app.get('/register', (req, res) => {
 // TEST ROUTE
 app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
+});
+
+app.get('/saved_movies', async (req, res) => {
+  try {
+    // TODO: Query the database for saved movies
+    const savedMovies = [];
+
+    // Render the discover page with saved movies
+    res.render('pages/savedMovies', { savedMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // LOGIN ROUTE
@@ -125,6 +128,34 @@ app.post('/login', async (req, res) => {
     } catch (err) {
         res.render('pages/login', { error: 'Error when contacting database' });
     }
+});
+
+//REGISTER ROUTE
+app.post('/register', async (req, res) => {
+  //hash the password using bcrypt library
+  const hash = await bcrypt.hash(req.body.password, 10);
+
+  const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
+
+  if (user) {
+      res.redirect('/login');
+      return;
+  }
+
+  db.tx(async (t) => {
+    await t.none(
+      "INSERT INTO users(username, password) VALUES ($1, $2);",
+      [req.body.username, hash]
+    );
+
+    res.render("pages/login");
+  }) 
+    .catch((err) => {
+      res.render("pages/register", {
+        error: true,
+        message: err.message,
+      });
+    });
 });
 
 /* END ROUTES */
