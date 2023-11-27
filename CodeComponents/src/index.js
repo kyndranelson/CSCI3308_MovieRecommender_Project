@@ -45,6 +45,8 @@ app.use(
       extended: true,
     })
   );
+
+app.use(express.static('resources'));
 /* END EXPRESS CONFIG */
 
 /* START ROUTES */
@@ -156,6 +158,34 @@ app.post('/register', async (req, res) => {
         message: err.message,
       });
     });
+});
+
+// SAVE MOVIE
+app.post('/save_movie', async (req, res) => {
+  try {
+      const { title, release_date, genre, vote_average, overview } = req.body;
+      const username = req.session.user.username;
+
+      const existingMovie = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title]);
+
+      let movieId;
+      if (existingMovie) {
+          movieId = existingMovie.id;
+      } else {
+          const insertedMovie = await db.one(
+              'INSERT INTO movies (title, release_date, genre, vote_average, overview) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+              [title, release_date, genre, vote_average, overview]
+          );
+          movieId = insertedMovie.id;
+      }
+
+      await db.none('INSERT INTO saved_to_users (username, movie_id) VALUES ($1, $2)', [username, movieId]);
+
+      res.status(200).json({ message: "Movie saved successfully." });
+  } catch (error) {
+      console.error('Error saving movie:', error);
+      res.status(500).json({ error: "An error occurred while saving the movie." });
+  }
 });
 
 /* END ROUTES */

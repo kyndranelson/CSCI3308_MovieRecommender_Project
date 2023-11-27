@@ -4,7 +4,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE movies (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     title VARCHAR(200),
     release_date VARCHAR(50),
     genre VARCHAR(50),
