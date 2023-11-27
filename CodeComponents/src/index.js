@@ -117,6 +117,34 @@ app.post('/login', async (req, res) => {
     }
 });
 
+//REGISTER ROUTE
+app.post('/register', async (req, res) => {
+  //hash the password using bcrypt library
+  const hash = await bcrypt.hash(req.body.password, 10);
+
+  const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
+
+  if (user) {
+      res.redirect('/login');
+      return;
+  }
+
+  db.tx(async (t) => {
+    await t.none(
+      "INSERT INTO users(username, password) VALUES ($1, $2);",
+      [req.body.username, hash]
+    );
+
+    res.render("pages/login");
+  }) 
+    .catch((err) => {
+      res.render("pages/register", {
+        error: true,
+        message: err.message,
+      });
+    });
+});
+
 /* END ROUTES */
 
 module.exports = app.listen(3000);
