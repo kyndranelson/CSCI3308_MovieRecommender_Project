@@ -3,21 +3,31 @@ CREATE TABLE users (
     password CHAR(60) NOT NULL 
 );
 
-CREATE TABLE saved_movies (
-    movie VARCHAR(200),
-    movie_id INTEGER
+CREATE TABLE movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(200),
+    release_date VARCHAR(50),
+    genre VARCHAR(50),
+    vote_average VARCHAR(50),
+    overview VARCHAR(1000)
 );
 
 CREATE TABLE saved_to_users (
-    
-);
-
-CREATE TABLE watched_movies (
-
+    username VARCHAR(50),
+    movie_id INTEGER,
+    PRIMARY KEY (username, movie_id),
+    FOREIGN KEY (movie_id) REFERENCES movies(id)
 );
 
 CREATE TABLE watched_to_users (
-
+    username VARCHAR(50),
+    movie_id INTEGER,
+    PRIMARY KEY (username, movie_id),
+    FOREIGN KEY (movie_id) REFERENCES movies(id)
 );
 
+-- SELECT sm.*
+-- FROM movies sm
+-- JOIN saved_to_users stu ON sm.id = stu.movie_id
+-- WHERE stu.username = 'some_username';
 
