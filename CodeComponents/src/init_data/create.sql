@@ -4,11 +4,12 @@ CREATE TABLE users (
 );
 
 CREATE TABLE saved_movies (
-
+    movie VARCHAR(200),
+    movie_id INTEGER
 );
 
 CREATE TABLE saved_to_users (
-
+    
 );
 
 CREATE TABLE watched_movies (
