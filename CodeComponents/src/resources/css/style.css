@@ -1,0 +1,23 @@
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  opacity: 0.8; /* Adjust opacity as desired */
+}
+
+/* Adjust the position of carousel control buttons */
+.carousel-control-prev {
+    left: -111px !important; /* Move the button more towards the left */
+}
+
+.carousel-control-next {
+    right: -111px !important; /* Move the button more towards the right */
+}
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #000000; /* Change background color */
+  border-radius: 50%; /* Make the buttons circular */
+  padding: 5px; /* Adjust padding as needed */
+}
