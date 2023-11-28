@@ -1,1 +1,13 @@
--
+Went through what challenges we were having
+- Logout page
+- Bcrypt
+Went through what we’ve accomplished as a team since last time
+- In the Week_2 release notes file
+Fixed our user stories to add description and story points
+Individual contributions:
+- Robin: docker stuff, discovery ui, and routes
+- Matt: testing stuff and login/register routes
+- Kyndra: test plan lab 11, logout route, bug fixes, and design on webpage
+- Mathis: made tweaks to the login page
+- Micah: partials and pages frameworks
+Talked about what we were going to work on for the next meeting

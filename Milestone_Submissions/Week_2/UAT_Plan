@@ -1,0 +1,80 @@
+**Test plan 1: Check login and users system to check if navbar works properly**
+Test cases:
+  a) Navbar redirects correctly to the login/registration pages
+  b) Navbar shows correct output for non logged in user
+  c) Make an account on the register page
+  d) Check SQL tables to make sure that the new user has been added properly
+  e) Sign into the account: User: Tester Password Tester
+  f) Navbar shows correct output for logged in user 
+  g) Click on my movies
+Test data:
+  a) None: clicking on website
+  b) None: clicking on website
+  c) User: Tester Password: Tester
+  d) GET _ from users()
+  e) User: Tester Password: Tester
+  f) None: clicking on website
+  g) None: clicking on website
+Test environment: On a web browser on a working electronic device
+Test results: 
+  a) Shows login/register page
+  b) Shows login/register page if user is not logged in
+  c) Shows you have registered successfully on page
+  d) Output hows correct user: Tester
+  e) Logs in and shows discover page
+  f) Shows correct navbar and discover page
+  g) Displays your movies (none cause new acc)
+User acceptance testers:
+Humans that can read and click on websites! 
+
+**Test plan 2: Add and remove movies**
+Test cases:
+  a) Log into account   
+  b) Add movie to save 
+  c) Add movie to watched
+  d) Go to saved and watched movies and check if movie is there
+  e) Remove movie from save 
+  f) Remove movie from watched
+  g) Go to saved and watched movies and make sure movie is not there
+  h) Log out of account
+Test data:   
+  a) User: Tester Password: Tester
+  b) Movie: movie1
+  c) Movie: movie2
+  d) None: clicking on website
+  e) Movie: movie1
+  f) Movie: movie2
+  g) None: clicking on website
+  h) None: clicking on website
+Test environment: On a web browser on a working electronic device
+Test results: 
+  a) Page displays: Logged in successfully
+  b) Green bar on the top showing added to saved successfully
+  c) Green bar on the top showing added to watched list successfully
+  d) Movie shown on the three pages
+  e) Red bar on the top showing removed from saved successfully
+  f) Red bar on the top showing removed from watched list successfully
+  g) Movie not shown on the three pages
+  h) Page displays: Logged out  successfully
+User acceptance testers:
+Humans that can read and click on websites! 
+
+**Test plan 3: Recommendation system**
+Test cases:
+  a) Log into account
+  b) Rec tester should already have a good amount of movies added and rated
+  c) Go to saved and watched movies and compare the genres there with the movies in the recommendation system
+  d) Write down the genres of some movies from both sections recommendations and watched movies
+Test data 
+  a) Username: recTester password: recTester
+  b) None: clicking on website
+  c) None: clicking on website
+  d) Genres of movies
+Test environment: On a web browser on a working electronic device
+Test Results:
+  a) Page displays: Logged in successfully
+  b) Rec tester having movies added and rated already
+  c) At least a 70% match in genres between sections recommended and watched movies
+  d) At least a 70% match in genres between sections recommended and watched movies
+User acceptance testers:
+Humans that can read and click on websites! 
