@@ -1,0 +1,34 @@
+<%- include('../partials/header', { title: 'Watched Movies - Purrfect Movie Rec' }) %>
+
+
+<!-- Include the menu -->
+<%- include('../partials/menu') %>
+
+<div class="container mt-4">
+    <!-- Page heading -->
+    <h2 class="mb-4">Watched Movies</h2>
+
+    <!-- Movie cards in a grid -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% watchedMovies.forEach(movie => { %>
+            <div class="col">
+                <!-- Bootstrap card for each movie -->
+                <div class="card">
+                    <!-- Movie poster at the top of the card -->
+                    <img src="<%= movie.image_url    %>" class="card-img-top" alt="<%= movie.title %> Poster">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= movie.title %></h5>
+                        <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
+                        <p class="card-text"><strong>Genre:</strong> <%= movie.genre %></p>
+                        <p class="card-text"><strong>Average Score:</strong> <%= movie.vote_average %></p>
+                        <p class="card-text"><strong>Overview:</strong> <%= movie.overview %></p>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+</div>
+
+<!-- Include the footer -->
+<%- include('../partials/footer') %>

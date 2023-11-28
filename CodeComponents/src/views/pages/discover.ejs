@@ -21,6 +21,33 @@
             <p class="card-text"><strong>Genre:</strong> <%= movie.genre_ids %></p>
             <p class="card-text"><strong>Average Score:</strong> <%= movie.vote_average %></p>
             <p class="card-text"><strong>Overview:</strong> <%= movie.overview %></p>
+            <button 
+              class="btn btn-primary save-movie-btn" 
+              data-id="<%= movie.id %>" 
+              data-title="<%= movie.title %>" 
+              data-release_date="<%= movie.release_date %>" 
+              data-genre="<%= movie.genre_ids %>" 
+              data-vote_average="<%= movie.vote_average %>" 
+              data-overview="<%= movie.overview %>"
+              data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>"
+              >
+              
+              Save Movie
+            </button>
+
+            <button 
+              class="btn btn-primary watch-movie-btn" 
+              data-id="<%= movie.id %>" 
+              data-title="<%= movie.title %>" 
+              data-release_date="<%= movie.release_date %>" 
+              data-genre="<%= movie.genre_ids %>" 
+              data-vote_average="<%= movie.vote_average %>" 
+              data-overview="<%= movie.overview %>"
+              data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>"
+              >
+              
+              Mark as Watched
+            </button>
             <!-- Add other details you want to display -->
           </div>
         </div>
