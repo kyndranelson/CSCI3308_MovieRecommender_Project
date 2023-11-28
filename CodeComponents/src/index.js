@@ -51,6 +51,12 @@ app.use(express.static('resources'));
 
 /* START ROUTES */
 app.get('/', (req, res) => {
+  res.render('partials/menu', {
+    user: req.user
+  });
+});
+
+app.get('/', (req, res) => {
   // Use the res.redirect method to redirect the user to the /login endpoint
   res.redirect('/discover')
 });
