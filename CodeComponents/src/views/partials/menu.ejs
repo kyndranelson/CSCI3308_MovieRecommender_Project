@@ -11,11 +11,19 @@
               aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
           </button>
+          <!--Logo-->
+          <div class="image">
+            <a class="navbar-brand">
+                <img src="<%= 'img/logo.ico' %>" alt="A logo of a cat" width="40" height="40"/>
+            </a>
+          </div>
           <div class="collapse navbar-collapse" id="navbar-collapse">
               <ul class="navbar-nav me-auto">
+                  <!--Discover Page-->
                   <li class="nav-item">
                       <a class="nav-link" href="/discover">Discover</a>
                   </li>
+                  <!--Saved, Watched, and Recommended Movie Pages-->
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           Movies
@@ -28,6 +36,7 @@
                   </li>
               </ul>
               <div class="nav-item d-flex"> <!-- Use d-flex to create a flex container -->
+                  <!--Changes on whether the user is logged in or not-->
                   <% if (typeof user == 'undefined') { %>
                     <div class="me-2"> <!-- me-2 for spacing -->
                         <a class="nav-link" href="/register">Register</a>
