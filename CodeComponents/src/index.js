@@ -51,15 +51,13 @@ app.use(express.static('resources'));
 
 /* START ROUTES */
 app.get('/', (req, res) => {
+  // Use the res.redirect method to redirect the user to the /discover endpoint
+  res.redirect('/discover')
   res.render('partials/menu', {
     user: req.user
   });
 });
 
-app.get('/', (req, res) => {
-  // Use the res.redirect method to redirect the user to the /login endpoint
-  res.redirect('/discover')
-});
 // Discover route
 app.get('/discover', async (req, res) => {
   try {
