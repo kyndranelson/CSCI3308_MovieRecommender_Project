@@ -53,9 +53,6 @@ app.use(express.static('resources'));
 app.get('/', (req, res) => {
   // Use the res.redirect method to redirect the user to the /discover endpoint
   res.redirect('/discover')
-  res.render('partials/menu', {
-    user: req.user
-  });
 });
 
 // Discover route
@@ -71,12 +68,25 @@ app.get('/discover', async (req, res) => {
 
     const response = await axios.get(tmdbEndpoint, { params });
 
-
     const topMovies = response.data.results.slice(0, 10); // Adjust the number of movies as needed
     res.render('pages/discover', { topMovies });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
+  }
+  try{
+    const username = req.session.user.username;
+
+    const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [username]);
+    
+    if (!user) {
+        user = 'undefined'
+        return;
+    }
+
+    req.session.user = user;
+  }catch (err) {
+    res.render('pages/login', { error: 'Error when contacting database' });
   }
 });
 app.get('/logout', (req, res) => {
