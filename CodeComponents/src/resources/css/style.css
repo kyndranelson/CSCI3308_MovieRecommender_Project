@@ -20,3 +20,7 @@
   border-radius: 50%; /* Make the buttons circular */
   padding: 5px; /* Adjust padding as needed */
 }
+
+body {
+  padding-bottom: 50px;
+}
