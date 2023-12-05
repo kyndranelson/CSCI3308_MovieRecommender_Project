@@ -133,6 +133,26 @@ app.get('/watched_movies', async (req, res) => {
   }
 });
 
+// RECOMMENDED ROUTE
+app.get('/recommended_movies', async (req, res) => {
+  try {
+    const username = req.session.user.username;
+    // TODO: Query the database for saved movies
+    const topGenre = await db.any(
+      "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username",
+      [username]
+    );
+
+    console.log(watchedMovies)
+
+    // Render the discover page with saved movies
+    res.render('pages/recommendedMovies', { watchedMovies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // LOGIN ROUTE
 app.post('/login', async (req, res) => {
     try {
