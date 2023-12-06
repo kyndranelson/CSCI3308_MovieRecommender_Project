@@ -22,7 +22,7 @@
                   <div class="card-body">
                     <h6 class="card-title"><%= topMovies[j].title %></h6>
                     <p class="card-text"><strong>Release Date:</strong> <%= topMovies[j].release_date %></p>
-                    <p class="card-text"><strong>Genre:</strong> <%= topMovies[j].genre_ids %></p>
+                    <p class="card-text"><strong>Genre:</strong> <%= topMovies[j].genres_ids.join(', ') %></p>
                     <p class="card-text"><strong>Average Score:</strong> <%= topMovies[j].vote_average %></p>
                     <!-- Buttons for actions -->
                     <button 

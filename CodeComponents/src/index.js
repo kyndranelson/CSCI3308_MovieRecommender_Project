@@ -61,6 +61,18 @@ app.get('/', (req, res) => {
 // Discover route
 app.get('/discover', async (req, res) => {
   try {
+    const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+      },
+    });
+
+    const genres = genresResponse.data.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+
     const tmdbEndpoint = 'https://api.themoviedb.org/3/discover/movie';
     const params = {
       api_key: process.env.API_KEY,
@@ -70,15 +82,25 @@ app.get('/discover', async (req, res) => {
     };
 
     const response = await axios.get(tmdbEndpoint, { params });
-
-
     const topMovies = response.data.results.slice(0, 12); // Adjust the number of movies as needed
+    console.log(genres);
+    topMovies.forEach((movie) => {
+      console.log(movie.genre_ids); // Log initial genre_ids
+    
+      // Map genre_ids to their corresponding genre names using the genres object
+      movie.genres_ids = movie.genre_ids.map((genreId) => genres[genreId]);
+    
+      console.log(movie.genres_ids); // Log the mapped genre names
+    });
+    
+
     res.render('pages/discover', { topMovies });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 app.get('/logout', (req, res) => {
   res.render('pages/logout',)
 });
