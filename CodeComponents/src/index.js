@@ -53,9 +53,6 @@ app.use(express.static('resources'));
 app.get('/', (req, res) => {
   // Use the res.redirect method to redirect the user to the /discover endpoint
   res.redirect('/discover')
-  res.render('partials/menu', {
-    user: req.user
-  });
 });
 
 // Discover route
@@ -94,23 +91,25 @@ app.get('/discover', async (req, res) => {
     });
     
 
-    res.render('pages/discover', { topMovies });
+    res.render('pages/discover', { topMovies, user: req.session?.user });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
   }
+
 });
 
 app.get('/logout', (req, res) => {
-  res.render('pages/logout',)
+  req.session.destroy();
+  res.render('pages/logout', {user: req.session?.user} )
 });
 app.get('/login', (req, res) => {
   // Handle the login page logic here or render a login page if needed
-  res.render('pages/login',)
+  res.render('pages/login', {user: req.session?.user} )
 });
 app.get('/register', (req, res) => {
   // Use the res.redirect method to redirect the user to the /login endpoint
-  res.render('pages/register',)
+  res.render('pages/register', {user: req.session?.user} )
 });
 // TEST ROUTE
 app.get('/welcome', (req, res) => {
@@ -129,7 +128,7 @@ app.get('/saved_movies', async (req, res) => {
     console.log(savedMovies)
 
     // Render the discover page with saved movies
-    res.render('pages/savedMovies', { savedMovies });
+    res.render('pages/savedMovies', { savedMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -148,7 +147,27 @@ app.get('/watched_movies', async (req, res) => {
     console.log(watchedMovies)
 
     // Render the discover page with saved movies
-    res.render('pages/watchedMovies', { watchedMovies });
+    res.render('pages/watchedMovies', { watchedMovies, user: req.session?.user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// RECOMMENDED ROUTE
+app.get('/recommended_movies', async (req, res) => {
+  try {
+    const username = req.session.user.username;
+    // TODO: Query the database for saved movies
+    const topGenre = await db.any(
+      "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username",
+      [username]
+    );
+
+    console.log(watchedMovies)
+
+    // Render the discover page with saved movies
+    res.render('pages/recommendedMovies', { watchedMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -170,7 +189,7 @@ app.post('/login', async (req, res) => {
         const isValid = await bcrypt.compare(password, user.password);
 
         if (!isValid) {
-            res.render('pages/login', { error: 'Invalid username or password' });
+            res.render('pages/login', { user: req.session?.user, error: 'Invalid username or password' });
             return;
         }
 
@@ -179,7 +198,7 @@ app.post('/login', async (req, res) => {
 
         res.redirect('/discover');
     } catch (err) {
-        res.render('pages/login', { error: 'Error when contacting database' });
+        res.render('pages/login', { user: req.session?.user, error: 'Error when contacting database' });
     }
 });
 
@@ -201,7 +220,7 @@ app.post('/register', async (req, res) => {
       [req.body.username, hash]
     );
 
-    res.render("pages/login");
+    res.render('pages/login', {user: req.session?.user});
   }) 
     .catch((err) => {
       res.render("pages/register", {

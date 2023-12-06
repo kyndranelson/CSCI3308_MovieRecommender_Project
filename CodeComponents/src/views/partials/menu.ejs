@@ -24,20 +24,24 @@
                       <a class="nav-link" href="/discover">Discover</a>
                   </li>
                   <!--Saved, Watched, and Recommended Movie Pages-->
-                  <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Movies
-                      </a>
-                      <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="/saved_movies">Saved Movies</a></li>
-                          <li><a class="dropdown-item" href="/watched_movies">Watched Movies</a></li>
-                          <li><a class="dropdown-item" href="/recommened_movies">Recommened Movies</a></li>
-                      </ul>
-                  </li>
+                  <% if (user) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Movies
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/saved_movies">Saved Movies</a></li>
+                            <li><a class="dropdown-item" href="/watched_movies">Watched Movies</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommened_movies" style="color:purple">Get Recommended Movies</a>
+                    </li>
+                  <% } %>
               </ul>
               <div class="nav-item d-flex"> <!-- Use d-flex to create a flex container -->
                   <!--Changes on whether the user is logged in or not-->
-                  <% if (typeof user == 'undefined') { %>
+                  <% if (!user) { %>
                     <div class="me-2"> <!-- me-2 for spacing -->
                         <a class="nav-link" href="/register">Register</a>
                     </div>
