@@ -119,6 +119,11 @@ app.get('/welcome', (req, res) => {
 
 app.get('/saved_movies', async (req, res) => {
   try {
+    console.log(req.session.user); 
+    if (!req.session.user) {
+      // If user is not logged in, redirect to the login page
+      return res.redirect('/login');
+    }
     const username = req.session.user.username;
     // TODO: Query the database for saved movies
     const savedMovies = await db.any(
@@ -138,6 +143,11 @@ app.get('/saved_movies', async (req, res) => {
 
 app.get('/watched_movies', async (req, res) => {
   try {
+    console.log(req.session.user); 
+    if (!req.session.user) {
+      // If user is not logged in, redirect to the login page
+      return res.redirect('/login');
+    }
     const username = req.session.user.username;
     // TODO: Query the database for saved movies
     const watchedMovies = await db.any(
