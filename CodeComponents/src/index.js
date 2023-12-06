@@ -77,6 +77,7 @@ app.get('/discover', async (req, res) => {
 
 });
 app.get('/logout', (req, res) => {
+  req.session.destroy();
   res.render('pages/logout', {user: req.session?.user} )
 });
 app.get('/login', (req, res) => {
