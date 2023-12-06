@@ -68,7 +68,7 @@ app.get('/discover', async (req, res) => {
 
     const response = await axios.get(tmdbEndpoint, { params });
 
-    const topMovies = response.data.results.slice(0, 10); // Adjust the number of movies as needed
+    const topMovies = response.data.results.slice(0, 12); // Adjust the number of movies as needed
     res.render('pages/discover', { topMovies, user: req.session?.user });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
