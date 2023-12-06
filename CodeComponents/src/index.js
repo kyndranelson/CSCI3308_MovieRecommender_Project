@@ -137,14 +137,18 @@ app.get('/recommended_movies', async (req, res) => {
     const username = req.session.user.username;
     // TODO: Query the database for saved movies
     const topGenre = await db.any(
-      "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username",
+      "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username JOIN movies w ON wu.movie_id = w.id WHERE u.username = $1 GROUP BY w.genre ORDER BY genre_count DESC LIMIT 1;",
       [username]
     );
 
-    console.log(watchedMovies)
-
+    console.log(topGenre)
+    
+    const recommendedMovies = await db.any(
+      "SELECT m.* FROM movies m LEFT JOIN watched_to_users wu ON m.id = wu.movie_id LEFT JOIN saved_to_users su ON m.id = su.movie_id WHERE m.genre = $1 AND wu.movie_id IS NULL AND su.movie_id IS NULL ORDER BY CAST(m.vote_average AS DECIMAL) DESC LIMIT 12;",
+      [topGenre]
+    );
     // Render the discover page with saved movies
-    res.render('pages/recommendedMovies', { watchedMovies, user: req.session?.user });
+    res.render('pages/recommendedMovies', { recommendedMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
