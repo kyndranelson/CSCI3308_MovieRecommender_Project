@@ -1,5 +1,5 @@
-discover page now shows movies and their descriptions with minor bugs
-implemented design for discover page (carousel + sizing changes for movies)
-created logo for website
-implemented working saved and watched buttons for both the backend and frontend
-implemented what shows up for a user based on if they are logged in vs not logged in
+- discover page now shows movies and their descriptions with minor bugs
+- implemented design for discover page (carousel + sizing changes for movies)
+- created logo for website
+- implemented working saved and watched buttons for both the backend and frontend
+- implemented what shows up for a user based on if they are logged in vs not logged in
