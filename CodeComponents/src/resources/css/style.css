@@ -17,6 +17,16 @@
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   background-color: #000000; /* Change background color */
-  border-radius: 50%; /* Make the buttons circular */
+  border-radius: 10%; /* Make the buttons circular */
   padding: 5px; /* Adjust padding as needed */
 }
+
+.clicked {
+  opacity: 0.6; /* Change the opacity value */
+  color: #515151; /* Change the color to a lighter/darker shade */
+}
+
+nav{
+  background-color: rgb(133, 173, 53);
+}
+

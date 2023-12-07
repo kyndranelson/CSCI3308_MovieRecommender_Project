@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.save-movie-btn').forEach(button => {
       button.addEventListener('click', function() {
+        if(!this.dataset.user){
+          window.location.href = '/login';
+          return;
+        }
         const movieData = {
           id: this.dataset.id,
           title: this.dataset.title,
@@ -20,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
+          this.classList.add('clicked');
           alert(data.message);
         })
         .catch((error) => {
@@ -31,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll('.watch-movie-btn').forEach(button => {
         button.addEventListener('click', function() {
+          if(!this.dataset.user){
+            window.location.href = '/login';
+            return;
+          }
           const movieData = {
             id: this.dataset.id,
             title: this.dataset.title,
@@ -50,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(response => response.json())
           .then(data => {
+            this.classList.add('clicked');
             alert(data.message);
           })
           .catch((error) => {
@@ -58,5 +68,20 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
       });
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+    
+        const searchInput = document.querySelector('input[type="search"]');
+        const searchTerm = searchInput.value.trim();
+    
+        if (searchTerm) {
+          // Redirect to the search page with the search query as a parameter
+          window.location.href = `/search?query=${encodeURIComponent(searchTerm)}`;
+        }
+      });
+
+
   });
   

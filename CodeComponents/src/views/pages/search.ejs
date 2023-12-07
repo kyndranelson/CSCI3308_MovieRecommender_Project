@@ -1,0 +1,63 @@
+<%- include('../partials/header', { title: 'Saved Movies - Purrfect Movie Rec' }) %>
+
+
+<!-- Include the menu -->
+<%- include('../partials/menu') %>
+
+<div class="container mt-4">
+    <!-- Page heading -->
+    <h2 class="mb-4">Search Results</h2>
+    <%-  console.log(user)%>
+    <!-- Movie cards in a grid -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% searchedMovies.forEach(movie => { %>
+            <div class="col">
+                <!-- Bootstrap card for each movie -->
+                <div class="card">
+                    <!-- Movie poster at the top of the card -->
+                    <img src="<%= 'https://image.tmdb.org/t/p/original/' + movie.poster_path %>" class="card-img-top" alt="<%= movie.title %> Poster">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= movie.title %></h5>
+                        <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
+                        <p class="card-text"><strong>Genre:</strong> <%= movie.genre_ids %></p>
+                        <p class="card-text"><strong>Average Score:</strong> <%= movie.vote_average %></p>
+                        <p class="card-text"><strong>Overview:</strong> <%= movie.overview %></p>
+                    </div>
+                    
+                </div>
+                <button 
+                        class="btn btn-primary save-movie-btn" 
+                        data-id="<%= movie.id %>" 
+                        data-title="<%= movie.title %>" 
+                        data-release_date="<%= movie.release_date %>" 
+                        data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>"
+                        data-genre="<%= movie.genre_ids.join(',') %>" 
+                        data-vote_average="<%= movie.vote_average %>" 
+                        data-overview="<%= movie.overview %>"
+                        data-user="<%= user %>" 
+                    >
+                        Save Movie
+                    </button>
+                    <button 
+                        class="btn btn-primary watch-movie-btn" 
+                        data-id="<%= movie.id %>" 
+                        data-title="<%= movie.title %>" 
+                        data-release_date="<%= movie.release_date %>" 
+                        data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>"
+                        data-genre="<%= movie.genre_ids.join(',') %>" 
+                        data-vote_average="<%= movie.vote_average %>" 
+                        data-overview="<%= movie.overview %>"
+                        data-user="<%= user %>" 
+                    >
+                        Mark as Watched
+                    </button>
+            </div>
+            
+        <% }); %>
+    </div>
+    
+
+</div>
+
+<!-- Include the footer -->
+<%- include('../partials/footer') %>

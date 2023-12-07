@@ -82,7 +82,7 @@ app.get('/discover', async (req, res) => {
     let topMovies = [];
     let popMovies = []; // To store all fetched movies
     let currentPage = 1;
-    const totalPages= 2; // Number of pages to fetch, adjust as needed
+    const totalPages= 2 // Number of pages to fetch, adjust as needed
 
     while (currentPage <= totalPages) {
       const response = await axios.get(poptmdbEndpoint, {
@@ -143,6 +143,44 @@ app.get('/discover', async (req, res) => {
     res.render('pages/discover', { popMovies, topMovies, user: req.session?.user });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/search', async (req, res) => {
+  try {
+    const searchQuery = req.query.query; // Extracting the search query parameter from the request
+
+    const searchLink = 'https://api.themoviedb.org/3/search/movie';
+
+    const response = await axios.get(searchLink, {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+        query: searchQuery, 
+        page: 1, 
+      },
+    });
+
+    const searchedMovies = response.data.results.splice(0,12);
+    const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+      },
+    });
+
+    const genres = genresResponse.data.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+    searchedMovies.forEach((movie) => {
+      movie.genre_ids = movie.genre_ids.map((genreId) => genres[genreId]);
+    });
+
+    res.render('pages/search', {searchedMovies, user: req.session?.user });
+  } catch (error) {
+    console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
