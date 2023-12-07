@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <!-- Page heading -->
+    <h2 class="mb-4"><%= title %></h2>
+  
+    <!-- Carousel -->
+    <div id="<%= carouselId %>" class="carousel slide">
+      <div class="carousel-inner">
+        <% let moviesPerSlide = 4; %> <!-- Set the number of movies per slide -->
+        <% let totalSlides = Math.ceil(movies.length / moviesPerSlide); %>
+        <% for (let i = 0; i < movies.length; i += moviesPerSlide) { %> <!-- Loop for each slide -->
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %>"> <!-- Define a carousel item; add 'active' class for the first slide -->
+            <div class="row">
+              <% for (let j = i; j < i + moviesPerSlide && j < movies.length; j++) { %> <!-- Loop for each movie within a slide -->
+                <div class="col-md-3">
+                  <div class="card">
+                    <!-- Movie poster at the top of the card -->
+                    <img src="<%= 'https://image.tmdb.org/t/p/w500' + movies[j].poster_path %>" class="card-img-top" alt="<%= movies[j].title %> Poster">
+                    <div class="card-body">
+                      <h6 class="card-title"><%= movies[j].title %></h6>
+                      <p class="card-text"><strong>Release Date:</strong> <%= movies[j].release_date %></p>
+                      <p class="card-text"><strong>Genre:</strong> <%= movies[j].genres_ids.join(', ') %></p>
+                      <p class="card-text"><strong>Average Score:</strong> <%= movies[j].vote_average %></p>
+                      <!-- Buttons for actions -->
+                      <button 
+                          class="btn btn-primary watch-movie-btn" 
+                          data-id="<%= movies[j].id %>" 
+                          data-title="<%= movies[j].title %>" 
+                          data-release_date="<%= movies[j].release_date %>" 
+                          data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movies[j].poster_path %>"
+                          data-genre="<%= movies[j].genre_ids.join(',') %>" 
+                          data-vote_average="<%= movies[j].vote_average %>" 
+                          data-overview="<%= movies[j].overview %>"
+                      >
+                        Save Movie
+                      </button>
+                      <button 
+                          class="btn btn-primary watch-movie-btn" 
+                          data-id="<%= movies[j].id %>" 
+                          data-title="<%= movies[j].title %>" 
+                          data-release_date="<%= movies[j].release_date %>" 
+                          data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + movies[j].poster_path %>"
+                          data-genre="<%= movies[j].genre_ids.join(',') %>" 
+                          data-vote_average="<%= movies[j].vote_average %>" 
+                          data-overview="<%= movies[j].overview %>"
+                      >
+                        Mark as Watched
+                      </button>
+                      <!-- Add other details you want to display -->
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <!-- Carousel navigation buttons -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#<%= carouselId %>" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#<%= carouselId %>" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+</div>

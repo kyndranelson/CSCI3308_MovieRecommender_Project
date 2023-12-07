@@ -1,0 +1,7 @@
+- Login and Register as well as saved and watched movies now does not show when the user is logged in
+- Almost finished with recommendation system
+- implemented design for discover page (carousel + sizing changes for movies)
+- Started slides for presentation
+- Fix genre issue with how it shows up
+- Started on search bar
+- Fixed the saved and watched buttons to actually save properly

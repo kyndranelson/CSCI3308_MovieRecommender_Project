@@ -56,6 +56,7 @@ app.get('/', (req, res) => {
 });
 
 // Discover route
+// Discover route
 app.get('/discover', async (req, res) => {
   try {
     const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
@@ -70,33 +71,80 @@ app.get('/discover', async (req, res) => {
       return acc;
     }, {});
 
-    const tmdbEndpoint = 'https://api.themoviedb.org/3/discover/movie';
+    const poptmdbEndpoint = 'https://api.themoviedb.org/3/discover/movie';
+    const toptmdbEndpoint = 'https://api.themoviedb.org/3/movie/top_rated';
+    
     const params = {
       api_key: process.env.API_KEY,
       language: 'en-US',
       sort_by: 'popularity.desc',
-      page: 1,
     };
+    let topMovies = [];
+    let popMovies = []; // To store all fetched movies
+    let currentPage = 1;
+    const totalPages= 2; // Number of pages to fetch, adjust as needed
 
-    const response = await axios.get(tmdbEndpoint, { params });
-    const topMovies = response.data.results.slice(0, 12); // Adjust the number of movies as needed
-    console.log(genres);
-    topMovies.forEach((movie) => {
-      console.log(movie.genre_ids); // Log initial genre_ids
-    
+    while (currentPage <= totalPages) {
+      const response = await axios.get(poptmdbEndpoint, {
+        params: {
+          ...params,
+          page: currentPage,
+        },
+      });
+      
+
+      const popmoviesOnPage = response.data.results;
+      
+      popmoviesOnPage.forEach((movie) => {
+        movie.genres_ids = movie.genre_ids.map((genreId) => genres[genreId]);
+      });
+
+      popMovies.push(...popmoviesOnPage);
+      currentPage++;
+    }
+    //reset current page
+    currentPage = 1;
+    //Get top movies
+    while (currentPage <= totalPages) {
+      const response2 = await axios.get(toptmdbEndpoint, {
+        params: {
+          ...params,
+          page: currentPage,
+        },
+      });
+      
+
+      const topmoviesOnPage = response2.data.results;
+      
+      topmoviesOnPage.forEach((movie) => {
+        movie.genres_ids = movie.genre_ids.map((genreId) => genres[genreId]);
+      });
+
+      topMovies.push(...topmoviesOnPage);
+      currentPage++;
+    }
+
+    console.log(popMovies.length);
+    popMovies.forEach((movie) => {
+
       // Map genre_ids to their corresponding genre names using the genres object
       movie.genres_ids = movie.genre_ids.map((genreId) => genres[genreId]);
     
-      console.log(movie.genres_ids); // Log the mapped genre names
     });
+    topMovies.forEach((movie) => {
+
+      // Map genre_ids to their corresponding genre names using the genres object
+      movie.genres_ids = movie.genre_ids.map((genreId) => genres[genreId]);
+    
+    });
+    console.log(topMovies.length);
     
 
-    res.render('pages/discover', { topMovies, user: req.session?.user });
+    res.render('pages/discover', { popMovies, topMovies, user: req.session?.user });
   } catch (error) {
     console.error('Error fetching data from TMDb:', error);
     res.status(500).send('Internal Server Error');
   }
-
 });
 
 app.get('/logout', (req, res) => {
@@ -222,6 +270,7 @@ app.get('/recommended_movies', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 // LOGIN ROUTE
 app.post('/login', async (req, res) => {

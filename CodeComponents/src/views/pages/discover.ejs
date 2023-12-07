@@ -71,5 +71,8 @@
   
 </div>
 
+<!-- Include the carousels -->
+<%- include('../partials/carousel', { title: 'Popular Movies', movies: popMovies, carouselId: 'popMoviesCarousel' }) %>
+<%- include('../partials/carousel', { title: 'Top Rated Movies', movies: topMovies, carouselId: 'topMoviesCarousel' }) %>
 <!-- Include the footer -->
 <%- include('../partials/footer') %>
