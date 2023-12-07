@@ -176,6 +176,22 @@ app.get('/saved_movies', async (req, res) => {
       "SELECT sm.* FROM movies sm JOIN saved_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
       [username]
     );
+    console.log(savedMovies);
+    const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+      },
+    });
+
+    const genres = genresResponse.data.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+    savedMovies.forEach((movie) => {
+      const genreArray = movie.genre.split(',').map((id) => parseInt(id.trim()));
+      movie.genres = genreArray.map((genreId) => genres[genreId]);
+    });
 
     console.log(savedMovies)
 
@@ -199,6 +215,21 @@ app.get('/watched_movies', async (req, res) => {
       "SELECT sm.* FROM movies sm JOIN watched_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
       [username]
     );
+    const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+      },
+    });
+
+    const genres = genresResponse.data.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+    watchedMovies.forEach((movie) => {
+      const genreArray = movie.genre.split(',').map((id) => parseInt(id.trim()));
+      movie.genres = genreArray.map((genreId) => genres[genreId]);
+    });
 
     console.log(watchedMovies)
 
@@ -279,10 +310,6 @@ app.post('/login', async (req, res) => {
 
         const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [username]);
 
-        if (!user) {
-            res.redirect('/register');
-            return;
-        }
 
         const isValid = await bcrypt.compare(password, user.password);
 
@@ -348,7 +375,6 @@ app.post('/save_movie', async (req, res) => {
       }
 
       await db.none('INSERT INTO saved_to_users (username, movie_id) VALUES ($1, $2)', [username, movieId]);
-
       res.status(200).json({ message: "Movie saved successfully." });
   } catch (error) {
       console.error('Error saving movie:', error);
@@ -377,7 +403,7 @@ app.post('/watch_movie', async (req, res) => {
 
       await db.none('INSERT INTO watched_to_users (username, movie_id) VALUES ($1, $2)', [username, movieId]);
 
-      res.status(200).json({ message: "Movie saved successfully." });
+      res.status(200).json({ message: "Movie added to watched successfully." });
   } catch (error) {
       console.error('Error saving movie:', error);
       res.status(500).json({ error: "An error occurred while saving the movie." });
