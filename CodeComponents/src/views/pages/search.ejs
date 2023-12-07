@@ -24,6 +24,7 @@
                     </div>
                     
                 </div>
+                <% if (user) { %>
                 <button 
                         class="btn btn-primary save-movie-btn" 
                         data-id="<%= movie.id %>" 
@@ -50,6 +51,7 @@
                     >
                         Mark as Watched
                     </button>
+                    <% } %>
             </div>
             
         <% }); %>

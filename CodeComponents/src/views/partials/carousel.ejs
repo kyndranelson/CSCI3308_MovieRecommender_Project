@@ -21,6 +21,7 @@
                       <p class="card-text"><strong>Genre:</strong> <%= movies[j].genres_ids.join(', ') %></p>
                       <p class="card-text"><strong>Average Score:</strong> <%= movies[j].vote_average %></p>
                       <!-- Buttons for actions -->
+                      <% if (user) { %>
                       <button 
                           class="btn btn-primary save-movie-btn" 
                           data-id="<%= movies[j].id %>" 
@@ -47,6 +48,7 @@
                       >
                         Mark as Watched
                       </button>
+                      <% } %>
                       <!-- Add other details you want to display -->
                     </div>
                   </div>
