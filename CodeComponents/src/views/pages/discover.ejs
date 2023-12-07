@@ -31,6 +31,9 @@
                       data-title="<%= topMovies[j].title %>" 
                       data-release_date="<%= topMovies[j].release_date %>" 
                       data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + topMovies[j].poster_path %>"
+                      data-genre="<%= topMovies[j].genre_ids.join(',') %>" 
+                      data-vote_average="<%= topMovies[j].vote_average %>" 
+                      data-overview="<%= topMovies[j].overview %>"
                     >
                       Save Movie
                     </button>
@@ -40,6 +43,9 @@
                       data-title="<%= topMovies[j].title %>" 
                       data-release_date="<%= topMovies[j].release_date %>" 
                       data-image_url="<%= 'https://image.tmdb.org/t/p/w500' + topMovies[j].poster_path %>"
+                      data-genre="<%= topMovies[j].genre_ids.join(',') %>" 
+                      data-vote_average="<%= topMovies[j].vote_average %>" 
+                      data-overview="<%= topMovies[j].overview %>"
                     >
                       Mark as Watched
                     </button>

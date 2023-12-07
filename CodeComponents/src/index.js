@@ -171,17 +171,50 @@ app.get('/recommended_movies', async (req, res) => {
     }
     const username = req.session.user.username;
     // TODO: Query the database for saved movies
-    const topGenre = await db.any(
-      "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username JOIN movies w ON wu.movie_id = w.id WHERE u.username = $1 GROUP BY w.genre ORDER BY genre_count DESC LIMIT 1;",
-      [username]
+    // const topGenre = await db.any(
+    //   "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username JOIN movies w ON wu.movie_id = w.id WHERE u.username = $1 GROUP BY w.genre ORDER BY genre_count DESC LIMIT 1;",
+    //   [username]
+    // );
+
+    // console.log(topGenre)
+    // const topGenreFormatted = topGenre[0].genre;
+    
+    // const recommendedMovies = await db.any(
+    //   "SELECT m.* FROM movies m LEFT JOIN watched_to_users wu ON m.id = wu.movie_id LEFT JOIN saved_to_users su ON m.id = su.movie_id WHERE m.genre = $1 AND wu.movie_id IS NULL AND su.movie_id IS NULL ORDER BY CAST(m.vote_average AS DECIMAL) DESC LIMIT 12;",
+    //   [topGenreFormatted]
+    // );
+
+
+    const watchedGenres = await db.any(
+      `SELECT genre
+       FROM watched_to_users
+       JOIN movies ON watched_to_users.movie_id = movies.id
+       WHERE username = $1`, [username]
     );
 
-    console.log(topGenre)
-    
+    // Parse the genre ids and flatten the array
+    const genreIds = watchedGenres.flatMap(({ genre }) => genre.split(',').map(id => id.trim()));
+
+    // Count the frequency of each genre id
+    const genreFrequency = genreIds.reduce((acc, id) => {
+        acc[id] = (acc[id] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Find the most frequent genre id
+    const mostFrequentGenreId = Object.keys(genreFrequency).sort((a, b) => genreFrequency[b] - genreFrequency[a])[0];
+
+    console.log("most freq", mostFrequentGenreId)
+
+    // Get the list of movies that the user has not watched which contain the most frequent genre id
     const recommendedMovies = await db.any(
-      "SELECT m.* FROM movies m LEFT JOIN watched_to_users wu ON m.id = wu.movie_id LEFT JOIN saved_to_users su ON m.id = su.movie_id WHERE m.genre = $1 AND wu.movie_id IS NULL AND su.movie_id IS NULL ORDER BY CAST(m.vote_average AS DECIMAL) DESC LIMIT 12;",
-      [topGenre]
+        `SELECT *
+        FROM movies
+        WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)
+        AND genre LIKE $2`, [username, `%${mostFrequentGenreId}%`]
     );
+
+    console.log("rec movies", recommendedMovies)
     // Render the discover page with saved movies
     res.render('pages/recommendedMovies', { recommendedMovies, user: req.session?.user });
   } catch (error) {
