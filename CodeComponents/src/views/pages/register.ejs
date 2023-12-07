@@ -2,29 +2,28 @@
 <%- include ('../partials/menu') %>
 
 <main>
-  <div class="container">
-    <div class="col-md-2 mx-auto">
-    <h1>Register</h1>
-    <form action="/register" method="POST">
-      <div class="form-group ">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" />
-      </div>
+<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  <div class="col-md-3 mx-auto">
+    <h2>Register</h2>
+  <form action="/register" method="POST">
+          
+          <div class = input-box style = "margin-top: 10px">
+            <input type="text" id="username" name="username" placeholder = "username" class="form-control"/>
+            <box-icon name = 'user'></box-icon>
+          </div>
+
+          <div class = input-box style = "margin-top: -15px">
+            <input type="password" id="password" name="password" placeholder = "password" class="form-control"/>
+            <box-icon name = 'lock-alt'></box-icon>
+          </div>
 
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" />
-      </div>
+        <div class="d-grid gap-2" style = "margin-top: -15px; margin-bottom: 55px;">
+          <button  class="btn btn-primary">Register</button>
+        </div>
 
-
-      <div class="form-group" style = "margin-top: 10px;">
-        <button type="submit" class="btn btn-primary">Register</button>
-      </div>
-
-      <p style="margin-top: 10px;">Already have an account? <a href="/login">Login Here</a></p>
-      </form>
-  </div>
+  </form>
+</div>
 </div>
 </main>
 
