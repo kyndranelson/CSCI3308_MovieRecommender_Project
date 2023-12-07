@@ -1,0 +1,10 @@
+- create header for website
+- create footer for website
+- create nav bar for website
+- implement both the header and footer for all of the pages
+- create login
+- create register
+- implemented some designs for login and register and made sure the buttons worked properly
+- create discover page that shows outline of where multiple movies will go
+- create test plan
+- create test cases using chai
