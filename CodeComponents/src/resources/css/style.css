@@ -31,7 +31,7 @@ nav {
 }
 
 body {
-  padding-bottom: 50px;
+  padding-bottom: 70px;
 }
 
 footer {
@@ -60,4 +60,8 @@ footer {
   left: 320px;
   top: -30px;
   line-height: 30px;
+}
+
+.description{
+  border-bottom: 2px solid black;
 }
