@@ -330,6 +330,12 @@ app.get('/recommended_movies', async (req, res) => {
         WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)
         AND genre LIKE $2`, [username, `%${mostFrequentGenreId}%`]
     );
+    const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+      },
+    });
     const genres = genresResponse.data.genres.reduce((acc, genre) => {
       acc[genre.id] = genre.name;
       return acc;
