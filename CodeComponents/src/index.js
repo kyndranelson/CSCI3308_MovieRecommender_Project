@@ -330,6 +330,14 @@ app.get('/recommended_movies', async (req, res) => {
         WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)
         AND genre LIKE $2`, [username, `%${mostFrequentGenreId}%`]
     );
+    const genres = genresResponse.data.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+    recommendedMovies.forEach((movie) => {
+      const genreArray = movie.genre.split(',').map((id) => parseInt(id.trim()));
+      movie.genres = genreArray.map((genreId) => genres[genreId]);
+    });
 
     console.log("rec movies", recommendedMovies)
     // Render the discover page with saved movies
