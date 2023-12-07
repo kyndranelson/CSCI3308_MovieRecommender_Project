@@ -384,6 +384,10 @@ app.post('/watch_movie', async (req, res) => {
   }
 });
 
+app.get('/about_us', (req, res) => {
+  res.render('pages/aboutUs', {user: req.session?.user} )
+});
+
 /* END ROUTES */
 
 module.exports = app.listen(3000);
