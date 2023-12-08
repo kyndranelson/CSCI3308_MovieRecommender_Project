@@ -198,6 +198,7 @@ app.get('/register', (req, res) => {
   // Use the res.redirect method to redirect the user to the /login endpoint
   res.render('pages/register', {user: req.session?.user} )
 });
+
 // TEST ROUTE
 app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
@@ -249,7 +250,7 @@ app.get('/watched_movies', async (req, res) => {
       return res.redirect('/login');
     }
     const username = req.session.user.username;
-    // TODO: Query the database for saved movies
+    // TODO: Query the database for watched movies
     const watchedMovies = await db.any(
       "SELECT sm.* FROM movies sm JOIN watched_to_users stu ON sm.id = stu.movie_id WHERE stu.username = $1",
       [username]
@@ -272,7 +273,7 @@ app.get('/watched_movies', async (req, res) => {
 
     console.log(watchedMovies);
 
-    // Render the discover page with saved movies
+    // Render the discover page with watched movies
     res.render('pages/watchedMovies', { watchedMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
@@ -288,7 +289,7 @@ app.get('/recommended_movies', async (req, res) => {
       return res.redirect('/login');
     }
     const username = req.session.user.username;
-    // TODO: Query the database for saved movies
+    // TODO: Query the database for recommended movies
     // const topGenre = await db.any(
     //   "SELECT w.genre, COUNT(*) AS genre_count FROM users u JOIN watched_to_users wu ON u.username = wu.username JOIN movies w ON wu.movie_id = w.id WHERE u.username = $1 GROUP BY w.genre ORDER BY genre_count DESC LIMIT 1;",
     //   [username]
@@ -347,7 +348,7 @@ app.get('/recommended_movies', async (req, res) => {
     });
 
     console.log("rec movies", recommendedMovies)
-    // Render the discover page with saved movies
+    // Render the discover page with recommended movies
     res.render('pages/recommendedMovies', { recommendedMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
@@ -434,6 +435,26 @@ app.post('/save_movie', async (req, res) => {
       res.status(500).json({ error: "An error occurred while saving the movie." });
   }
 });
+
+//DELETE SAVE MOVIE
+app.post('/delete_save_movie', async (req, res) => {
+  try {
+      const { title } = req.body;
+      const username = req.session.user.username;
+
+      const movieId = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title])
+
+      //delete from saved_to_users
+      await db.none('DELETE FROM saved_to_users WHERE username = $1 AND movie_id = $1', [username, movieId]);
+      res.status(200).json({ message: "Movie deleted successfully." });
+  } catch (error) {
+      console.error('Error deleting movie:', error);
+      res.status(500).json({ error: "An error occurred while deleting the movie." });
+  }
+});
+
+
+
 
 // WATCH MOVIE
 app.post('/watch_movie', async (req, res) => {
