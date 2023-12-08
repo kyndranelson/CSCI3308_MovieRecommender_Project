@@ -443,9 +443,8 @@ app.post('/delete_save_movie', async (req, res) => {
       const username = req.session.user.username;
 
       const movieId = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title])
-
       //delete from saved_to_users
-      await db.none('DELETE FROM saved_to_users WHERE username = $1 AND movie_id = $1', [username, movieId]);
+      await db.none('DELETE FROM saved_to_users WHERE username = $1 AND movie_id = $2', [username, movieId.id]);
       res.status(200).json({ message: "Movie deleted successfully." });
   } catch (error) {
       console.error('Error deleting movie:', error);
