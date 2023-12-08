@@ -78,3 +78,30 @@ Test Results:
   d) At least a 70% match in genres between sections recommended and watched movies
 User acceptance testers:
 Humans that can read and click on websites! 
+
+Test plan 4: Search Button Functionality
+Test cases:
+  a) Log into account
+  b) Search for 3 different one word movies 
+  c) Wait for the movies to load
+  d) Log out of account
+  e) Search for 3 different one word movies
+  f) Wait for the movies to load
+Test Data:
+  a) Username: searchTester password: searchTester
+  b) None: clicking on website
+  c) Search data
+  d) None: clicking on website
+  e) None: clicking on website
+  f) Search data
+Test environment: On a web browser on a working electronic device
+Test Results:
+  a) Page displays: Logged in successfully
+  b) Search loading
+  c) Page displays: movies with the one word in them as well as a no poster image if the movie does not have a poster available and buttons to save or watch movie
+  d) Page displays: Logged out successfully
+  e) Search loading
+  f) Page displays: movies with the one word in them as well as a no poster image if the movie does not have a poster available
+User acceptance testers:
+Humans that can read and click on websites! 
+
