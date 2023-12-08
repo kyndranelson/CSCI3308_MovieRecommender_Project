@@ -49,6 +49,21 @@
                         Mark as Watched
                       </button>
                       <% } %>
+                      <!-- Allows the user to open the overview to see what the movie is about -->
+                      <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                              Overview
+                            </button>
+                          </h2>
+                          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                              <p><%= movies[j].overview %></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <!-- Add other details you want to display -->
                     </div>
                   </div>
