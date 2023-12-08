@@ -56,7 +56,6 @@ app.get('/', (req, res) => {
 });
 
 // Discover route
-// Discover route
 app.get('/discover', async (req, res) => {
   try {
     const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
@@ -186,7 +185,9 @@ app.get('/search', async (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
+  //destroy the session first so the user can  be logged out
   req.session.destroy();
+  //render the logout page to then have the user redirect themselves to the discover page
   res.render('pages/logout', {user: req.session?.user} )
 });
 app.get('/login', (req, res) => {

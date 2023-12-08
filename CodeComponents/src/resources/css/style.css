@@ -27,34 +27,34 @@
 }
 
 nav {
-  background-color: white;
+  background-color: white; /*making the navbar white*/
 }
 
 body {
-  padding-bottom: 70px;
+  padding-bottom: 70px; /*making sure the user can scroll all the way down*/
 }
 
-footer {
+footer { 
   display: inline-flex;
   padding:5px;
-  font-size:15px;
-  background-color:rgb(140, 67, 189);
+  font-size:15px; 
+  background-color:rgb(140, 67, 189); /*making the footer purple so that the copyright page can be seen*/
   color:#ffffff;
 }
 
 .footertext{
-  color: white;
+  color: white; /*making the footer text white*/
   text-align: center;
 }
 
-.input-box input {
-  background: transparent;
+.input-box input { /*to change how the register and login page look*/
+  background: transparent; 
   border: none;
   outline: none;
   border-bottom: 2px solid black;
 }
 
-.input-box box-icon {
+.input-box box-icon { /*to change how the register and login page look*/
   position: absolute;
   position: relative;
   left: 320px;
@@ -64,5 +64,8 @@ footer {
 
 .description{
   border-bottom: 2px solid black;
+}
 
+.accordion{
+  margin-top: 15px;
 }
