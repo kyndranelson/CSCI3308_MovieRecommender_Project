@@ -15,7 +15,11 @@
                 <!-- Bootstrap card for each movie -->
                 <div class="card">
                     <!-- Movie poster at the top of the card -->
-                    <img src="<%= 'https://image.tmdb.org/t/p/original/' + movie.poster_path %>" class="card-img-top" alt="<%= movie.title %> Poster">
+                    <% if (movie.poster_path) {%>
+                        <img src="<%= 'https://image.tmdb.org/t/p/original/' + movie.poster_path %>" class="card-img-top" alt="<%= movie.title %> Poster">
+                    <% } else { %>
+                        <img src="/img/poster-not-available.jpg">
+                    <% } %>
                     <div class="card-body">
                         <h5 class="card-title"><%= movie.title %></h5>
                         <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>

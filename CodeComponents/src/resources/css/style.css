@@ -26,10 +26,43 @@
   color: #515151; /* Change the color to a lighter/darker shade */
 }
 
-nav{
-  background-color: rgb(133, 173, 53);
+nav {
+  background-color: white;
 }
 
 body {
-  padding-bottom: 50px;
+  padding-bottom: 70px;
+}
+
+footer {
+  display: inline-flex;
+  padding:5px;
+  font-size:15px;
+  background-color:rgb(140, 67, 189);
+  color:#ffffff;
+}
+
+.footertext{
+  color: white;
+  text-align: center;
+}
+
+.input-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid black;
+}
+
+.input-box box-icon {
+  position: absolute;
+  position: relative;
+  left: 320px;
+  top: -30px;
+  line-height: 30px;
+}
+
+.description{
+  border-bottom: 2px solid black;
+
 }

@@ -15,7 +15,11 @@
                 <!-- Bootstrap card for each movie -->
                 <div class="card">
                     <!-- Movie poster at the top of the card -->
-                    <img src="<%= movie.image_url    %>" class="card-img-top" alt="<%= movie.title %> Poster">
+                    <% if (movie.image_url) {%>
+                        <img src="<%= movie.image_url    %>" class="card-img-top">
+                    <% } else { %>
+                        <img src="/img/micah.jpg">
+                    <% } %>
                     <div class="card-body">
                         <h5 class="card-title"><%= movie.title %></h5>
                         <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
