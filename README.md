@@ -36,10 +36,8 @@ IMDB - https://relational.fit.cvut.cz/dataset/IMDb
 
   - Have a save list to save movies
   - Have a list to save watched movies
-  - Have a rating  and review that you can give each movie 
   - Have a login option 
   - Have a logout option
-  - Popup ads 
   - Virus cannot exit it 
   - Make headers and footers for all of the pages
   - Search option in the header(not for discover page)
@@ -51,6 +49,38 @@ IMDB - https://relational.fit.cvut.cz/dataset/IMDb
   - Discover page(able to access without logging in)
   - Saved movies
   - Watched movies
-  - Recommended movies 
-  - Movies based on a certain genre (dropdown menu)
+  - Recommended movies
+  - About me page
+  - Search page
+
+**Technology Stack for Project:**
+  - Github
+  - MySQL
+  - HTML/EJS/CSS/Javascript
+  - NodeJS
+  - LocalHost
+  - TMDB API
+  - Chai/Mocha
+  - Docker
+
+**Prerequisites to run Application:**
+  - Docker downloaded and set up for local runs
+  - SSH key set up within github and local computer
+
+**How to run Application Locally:**
+  - git clone the repository within the github
+    - https://github.com/kyndranelson/CSCI3308_MovieRecommender_Project#csci3308_movierecommender_project
+    - git clone git@github.com:kyndranelson/CSCI3308_MovieRecommender_Project.git
+    - make sure to have working ssh key within all of this
+  - Within CodeComponents folder:
+    - docker compose up -d
+    - use this link in address bar within google: http://localhost:3000/
+    - the link should reroute to the Discover page
+  - Enjoy!
+
+**How to run the Tests:**
+
+**Deployed Application Link:**
+- Working: http://localhost:3000/
+- Cloud Link: http://recitation-11-team-08.eastus.cloudapp.azure.com:3000/
 
