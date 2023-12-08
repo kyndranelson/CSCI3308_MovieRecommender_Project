@@ -445,7 +445,23 @@ app.post('/delete_save_movie', async (req, res) => {
       const movieId = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title])
       //delete from saved_to_users
       await db.none('DELETE FROM saved_to_users WHERE username = $1 AND movie_id = $2', [username, movieId.id]);
-      res.status(200).json({ message: "Movie deleted successfully." });
+      res.status(200).json({ message: "Movie deleted successfully. Refresh page." });
+  } catch (error) {
+      console.error('Error deleting movie:', error);
+      res.status(500).json({ error: "An error occurred while deleting the movie." });
+  }
+});
+
+//DELETE WATCHED MOVIE
+app.post('/delete_watched_movie', async (req, res) => {
+  try {
+      const { title } = req.body;
+      const username = req.session.user.username;
+
+      const movieId = await db.oneOrNone('SELECT id FROM movies WHERE title = $1', [title])
+      //delete from watched_to_users
+      await db.none('DELETE FROM watched_to_users WHERE username = $1 AND movie_id = $2', [username, movieId.id]);
+      res.status(200).json({ message: "Movie deleted successfully. Refresh page." });
   } catch (error) {
       console.error('Error deleting movie:', error);
       res.status(500).json({ error: "An error occurred while deleting the movie." });

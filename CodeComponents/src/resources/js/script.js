@@ -100,6 +100,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
 
+      document.querySelectorAll('.delete-watched-movie-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          if(!this.dataset.user){
+            window.location.href = '/login';
+            return;
+          }
+          const movieData = {
+            title: this.dataset.title,
+          };
+
+          fetch('/delete_watched_movie', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(movieData),
+          })
+          .then(response => response.json())
+          .then(data => {
+            this.classList.add('clicked');
+            alert(data.message);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert('Error deleting movie');
+          });
+        });
+      });
+
       const form = document.querySelector('form');
 
       form.addEventListener('submit', (event) => {

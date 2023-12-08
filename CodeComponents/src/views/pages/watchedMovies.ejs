@@ -27,6 +27,15 @@
                         <p class="card-text"><strong>Genre:</strong> <%= movie.genres %></p>
                         <p class="card-text"><strong>Average Score:</strong> <%= movie.vote_average %></p>
                         <p class="card-text"><strong>Overview:</strong> <%= movie.overview %></p>
+
+                        <button 
+                            class="btn btn-primary delete-watched-movie-btn" 
+                            data-title="<%= movie.title %>" 
+                            data-user="<%= user %>" 
+                            style = "background-color:rgb(246, 62, 62)"
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>
