@@ -79,7 +79,7 @@ Test Results:
 User acceptance testers:
 Humans that can read and click on websites! 
 
-Test plan 4: Search Button Functionality
+**Test plan 4: Search Button Functionality**
 Test cases:
   a) Log into account
   b) Search for 3 different one word movies 
