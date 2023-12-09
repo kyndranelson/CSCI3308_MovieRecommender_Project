@@ -4,7 +4,7 @@
 # Team Members: 
   Robin Luo
     - Github: Robin99999
-    - Email: robinluo2003@gmail.com
+    - Email: rolu7409@colorado.edu
   Kyndra Nelson
     - Github: kyndranelson
     - Email: kyne2945@colorado.edu
