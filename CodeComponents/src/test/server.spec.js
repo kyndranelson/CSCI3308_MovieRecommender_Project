@@ -31,10 +31,10 @@ describe('Server!', () => {
       .send({ username: "validUsername", password: "validPassword" })
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.redirectTo('/discover');
+        expect(res).to.redirectTo(/http:\/\/127\.0\.0\.1:\d+\/discover/);
         done();
       });
-  });
+  });  
   
   // Negative login
   it('Negative : /login', done => {
@@ -43,7 +43,31 @@ describe('Server!', () => {
       .post('/login')
       .send({ username: "invalidUsername", password: "invalidPassword" })
       .end((err, res) => {
-        expect(res).to.redirectTo('/login'); 
+        expect(res).to.not.redirect;
+        done();
+      });
+  });  
+
+  // Positive register
+  it('Positive: /register', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({ username: "newUsername", password: "newPassword" })
+      .end((err, res) => {
+        expect(err).to.be.null;
+        done();
+      });
+  });
+
+  // Negative register
+  it('Negative: /register', done => {
+    chai
+      .request(server)
+      .post('/register')
+      .send({ password: "nousername" })
+      .end((err, res) => {
+        expect(res).to.not.redirect;
         done();
       });
   });

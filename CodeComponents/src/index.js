@@ -311,6 +311,8 @@ app.get('/recommended_movies', async (req, res) => {
        WHERE username = $1`, [username]
     );
 
+    console.log("watched genres", watchedGenres)
+
     // Parse the genre ids and flatten the array
     const genreIds = watchedGenres.flatMap(({ genre }) => genre.split(',').map(id => id.trim()));
 
@@ -332,6 +334,9 @@ app.get('/recommended_movies', async (req, res) => {
         WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)
         AND genre LIKE $2`, [username, `%${mostFrequentGenreId}%`]
     );
+
+    console.log("recommended", recommendedMovies)
+
     const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
       params: {
         api_key: process.env.API_KEY,
@@ -383,30 +388,38 @@ app.post('/login', async (req, res) => {
 
 //REGISTER ROUTE
 app.post('/register', async (req, res) => {
-  //hash the password using bcrypt library
-  const hash = await bcrypt.hash(req.body.password, 10);
+  try {
+    //hash the password using bcrypt library
+    const hash = await bcrypt.hash(req.body.password, 10);
 
-  const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
+    const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
 
-  if (user) {
-      res.redirect('/login');
-      return;
-  }
+    if (user) {
+        res.redirect('/login');
+        return;
+    }
 
-  db.tx(async (t) => {
-    await t.none(
-      "INSERT INTO users(username, password) VALUES ($1, $2);",
-      [req.body.username, hash]
-    );
+    db.tx(async (t) => {
+      await t.none(
+        "INSERT INTO users(username, password) VALUES ($1, $2);",
+        [req.body.username, hash]
+      );
 
-    res.render('pages/login', {user: req.session?.user});
-  }) 
-    .catch((err) => {
-      res.render("pages/register", {
-        error: true,
-        message: err.message,
+      res.render('pages/login', {user: req.session?.user});
+    }) 
+      .catch((err) => {
+        res.render("pages/register", {
+          error: true,
+          message: err.message,
+        });
       });
+  } catch (err) {
+    res.render("pages/register", {
+      error: true,
+      message: err.message,
     });
+  }
+  
 });
 
 // SAVE MOVIE
