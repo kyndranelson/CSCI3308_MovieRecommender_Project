@@ -8,6 +8,11 @@
     <!-- Page heading -->
     <h2 class="mb-4">Recommended Movies</h2>
 
+    <% if(recommendedMovies.length === 0) { %>
+       <div> <h4><em>Save</em> some movies <b>and</b> mark some as <em>watched</em> to start getting recommendations! <blink>😊</blink></h1><img style="height:50px;display:inline" src="https://i.gifer.com/origin/10/10923c40ede1fed1af786393dfbba7ea_w200.gif"/></h4><h1>  </div>
+    <% } %>
+
+    <%= JSON.stringify(recommendedMovies.tempg) %>
     <!-- Movie cards in a grid -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <% recommendedMovies.forEach(movie => { %>
@@ -21,6 +26,7 @@
                         <img src="/img/poster-not-available.jpg">
                     <% } %>
                     <div class="card-body">
+                        <p style="color: gray;">Because you like <b><em><%= [...new Set(movie.tempg)].join(', ') %></em></b></p>
                         <h5 class="card-title"><%= movie.title %></h5>
                         <p class="card-text"><strong>Release Date:</strong> <%= movie.release_date %></p>
                         <p class="card-text"><strong>Genre:</strong> <%= movie.genres %></p>

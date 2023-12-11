@@ -316,27 +316,73 @@ app.get('/recommended_movies', async (req, res) => {
     // Parse the genre ids and flatten the array
     const genreIds = watchedGenres.flatMap(({ genre }) => genre.split(',').map(id => id.trim()));
 
+
+    console.log("genre ids", genreIds)
+
     // Count the frequency of each genre id
     const genreFrequency = genreIds.reduce((acc, id) => {
         acc[id] = (acc[id] || 0) + 1;
         return acc;
     }, {});
 
+    console.log("genre freq", genreFrequency)
+
     // Find the most frequent genre id
     const mostFrequentGenreId = Object.keys(genreFrequency).sort((a, b) => genreFrequency[b] - genreFrequency[a])[0];
 
     console.log("most freq", mostFrequentGenreId)
 
+    // If they have not saved any movies i.e no top genre to pick from, return blank.
+    if(!mostFrequentGenreId) {
+      res.render('pages/recommendedMovies', { recommendedMovies: [], user: req.session?.user });
+      return;
+    }
+
     // Get the list of movies that the user has not watched which contain the most frequent genre id
     const recommendedMovies = await db.any(
         `SELECT *
         FROM movies
-        WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)
-        AND genre LIKE $2`, [username, `%${mostFrequentGenreId}%`]
+        WHERE id NOT IN (SELECT movie_id FROM watched_to_users WHERE username = $1)`, [username]
     );
 
-    console.log("recommended", recommendedMovies)
+    /*
+     [
+codecomponents-web-1  |   {
+codecomponents-web-1  |     id: 1,
+codecomponents-web-1  |     title: 'Meg 2: The Trench',
+codecomponents-web-1  |     release_date: '2023-08-02',
+codecomponents-web-1  |     genre: '28,878,27',
+codecomponents-web-1  |     vote_average: '6.7',
+codecomponents-web-1  |     overview: 'An exploratory dive into the deepest depths of the ocean of a daring research team spirals into chaos when a malevolent mining operation threatens their mission and forces them into a high-stakes battle for survival.',
+codecomponents-web-1  |     image_url: 'https://image.tmdb.org/t/p/w500/4m1Au3YkjqsxF8iwQy0fPYSxE0h.jpg',
+codecomponents-web-1  |     genres: [ 'Action', 'Science Fiction', 'Horror' ]
+codecomponents-web-1  |   }
+codecomponents-web-1  | ]
+*/
 
+
+    console.log("recommended (all movies not watched)", recommendedMovies)
+
+
+    const realMovies = [];
+
+    for(const movie of recommendedMovies) {
+      // if the user has marked watched movie genre id
+      const mvids = movie.genre.split(',').map(id => id.trim());
+      const tempg = [];
+      for(const geid of genreIds) {
+        if(mvids.includes(geid)) {
+          tempg.push(geid)
+        }
+      }
+      if(tempg.length>0) {
+        realMovies.push({...movie, tempg});
+      }
+    }
+
+    console.log("real moviez", realMovies)
+
+    
     const genresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
       params: {
         api_key: process.env.API_KEY,
@@ -347,14 +393,17 @@ app.get('/recommended_movies', async (req, res) => {
       acc[genre.id] = genre.name;
       return acc;
     }, {});
-    recommendedMovies.forEach((movie) => {
+    realMovies.forEach((movie) => {
       const genreArray = movie.genre.split(',').map((id) => parseInt(id.trim()));
       movie.genres = genreArray.map((genreId) => genres[genreId]);
+
+      movie.tempg = movie.tempg.map(e => genres[e]);
     });
 
     console.log("rec movies", recommendedMovies)
+    console.log("real moviez2 ", realMovies)
     // Render the discover page with recommended movies
-    res.render('pages/recommendedMovies', { recommendedMovies, user: req.session?.user });
+    res.render('pages/recommendedMovies', { recommendedMovies: realMovies, user: req.session?.user });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
