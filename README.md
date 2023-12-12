@@ -79,8 +79,7 @@ IMDB - https://relational.fit.cvut.cz/dataset/IMDb
   - Enjoy!
 
 **How to run the Tests:**
-
+- The tests are able to be run using the instructions found in /Milestone_Submissions/Week_2/UAT_Plan
 **Deployed Application Link:**
-- Working: http://localhost:3000/
-- Cloud Link: http://recitation-11-team-08.eastus.cloudapp.azure.com:3000/
+- http://recitation-11-team-08.eastus.cloudapp.azure.com:3000/
 
